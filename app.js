@@ -71,9 +71,9 @@ app.get("/test", (req, res) => {
 // Using error middleware
 app.use(errorMiddleware);
 
-const server = app.listen((10000||process.env.PORT), () => {
+const server = app.listen(10000, () => {
   console.log(
-    `Server started on PORT: ${process.env.PORT} in ${process.env.NODE_ENV} mode.`
+    `Server started on PORT:10000  mode.`
   `Working`
   );
 });
