@@ -8,7 +8,7 @@ export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   const authorization = req.headers.authorization;
 
   if (!authorization || !authorization.startsWith('Bearer')) {
-    return res.status(401).json({
+    return res.status(402).json({
       success: false,
       message: "Login first to access this resource",
     });
