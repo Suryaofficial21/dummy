@@ -80,6 +80,12 @@ export const updateRating = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+export const getAllRatings = catchAsyncErrors(async (req, res, next) => {
+  const ratings = await Rating.find();
+  res.status(200).json({
+    success: true,
+    ratings,
+  })})
 // Delete Rating  =>  /api/v1/ratings/:id
 export const deleteRating = catchAsyncErrors(async (req, res, next) => {
   const ratingId = req.params.id;
