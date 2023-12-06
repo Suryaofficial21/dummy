@@ -69,7 +69,7 @@ app.use("/api/v1", ratingRoutes);
 // Using error middleware
 app.use(errorMiddleware);
 
-const server = app.listen(4000, () => {
+const server = app.listen((4000||process.env.PORT), () => {
   console.log(
     `Server started on PORT: ${process.env.PORT} in ${process.env.NODE_ENV} mode.`
   );
