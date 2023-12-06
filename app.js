@@ -74,7 +74,6 @@ app.use(errorMiddleware);
 const server = app.listen(10000, () => {
   console.log(
     `Server started on PORT:10000  mode.`
-  `Working`
   );
 });
 
