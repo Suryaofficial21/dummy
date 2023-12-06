@@ -153,7 +153,7 @@ export const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // Specify the directory where you want to store the files locally
-    cb(null, '/public');
+    cb(null, './public');
   },
   filename: (req, file, cb) => {
     // Customize the filename if needed; you can use the original name or generate a unique name
