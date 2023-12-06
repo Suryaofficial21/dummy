@@ -50,12 +50,12 @@ import userActivityRoutes from './routes/userActivity.js'
 import ratingRoutes from './routes/rating.js'
 import currency from "./models/currency.js";
 
-// app.use("/api/v1", productRoutes);
-// app.use("/api/v1", authRoutes);
-// app.use("/api/v1", orderRoutes);
-// app.use("/api/v1", paymentRoutes);
-// app.use("/api/v1", userActivityRoutes);
-// app.use("/api/v1", ratingRoutes);
+app.use("/api/v1", productRoutes);
+app.use("/api/v1", authRoutes);
+app.use("/api/v1", orderRoutes);
+app.use("/api/v1", paymentRoutes);
+app.use("/api/v1", userActivityRoutes);
+app.use("/api/v1", ratingRoutes);
 
 // if (process.env.NODE_ENV === "PRODUCTION") {
 //   app.use(express.static(path.join(__dirname, "../frontend/build")));
