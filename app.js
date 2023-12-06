@@ -7,11 +7,13 @@ import errorMiddleware from "./middlewares/errors.js";
 import path from "path";
 import axios from "axios";
 import cheerio from "cheerio"
+import cors from'cors'
 import Currency from "./models/currency.js";
 // import { fileURLToPath } from "url"
 
 // const __filename = fileURLToPath(import.meta.url)
 // const __dirname = path.dirname(__filename)
+app.use(cors());
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
 app.use(express.static("backend/public"));

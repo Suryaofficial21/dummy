@@ -191,7 +191,12 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
       if (req.file) {
         // Save the image path in the 'attributes' object
         const path = req.file.path;
+        if((product.attributes.image).length>=3){
+          product.attributes.image.shift()
+          product.attributes.image.splice(0,2)
+        }
         product.attributes.image.push(path);
+
       }
       console.log("working")
 
