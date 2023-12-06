@@ -98,16 +98,25 @@ export const newProduct = catchAsyncErrors(async (req, res) => {
 // Get single product details   =>  /api/v1/products/:id
 export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
   const { token } = req.cookies;
+  console.log("working")
+
   let userid;
   if (token) {
+  console.log("working")
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(decoded)
+
     userid = await User.findById(decoded.id);
   }
+  console.log("working")
+
   let wishlist = [];
   if (userid) {
     const userActivity = await UserActivity.findOne({ userId: userid });
     wishlist = userActivity ? userActivity.wishlist : [];
   }
+  console.log("working")
 
 
 
@@ -120,6 +129,7 @@ export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
     isInWishlist = true
   }
 
+  console.log("working")
 
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
@@ -143,7 +153,7 @@ export const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // Specify the directory where you want to store the files locally
-    cb(null, 'backend/public');
+    cb(null, '/public');
   },
   filename: (req, file, cb) => {
     // Customize the filename if needed; you can use the original name or generate a unique name
@@ -154,21 +164,25 @@ const upload = multer({ storage: storage });
 // Update product details   =>  /api/v1/products/:id
 export const updateProduct = catchAsyncErrors(async (req, res, next) => {
   // Multer middleware to handle image upload
+  console.log("working")
   upload.single('image')(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
       return next(new ErrorHandler('Multer error', 400));
     } else if (err) {
       return next(new ErrorHandler(err.message, 400));
     }
+    console.log("working")
 
     // Now you can handle the updated request
     try {
       let product = await Product.findById(req.params.id);
+      console.log("working")
 
 
       if (!product) {
         return next(new ErrorHandler('Product not found', 404));
       }
+      console.log("working")
 
       // Update attributes
       product.attributes.updatedAt = new Date();
@@ -179,6 +193,7 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
         const path = req.file.path;
         product.attributes.image.push(path);
       }
+      console.log("working")
 
       // Combine existing attributes with the updated ones
       const combinedObject = { ...product.attributes, ...req.body.attributes };

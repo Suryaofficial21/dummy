@@ -15,6 +15,8 @@ import Currency from "./models/currency.js";
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
 app.use(express.static("backend/public"));
+app.use(express.static("public"));
+app.use(express.static("/public"));
 // app.use(express.static("./public"))
 
 
@@ -71,7 +73,7 @@ app.get("/test", (req, res) => {
 // Using error middleware
 app.use(errorMiddleware);
 
-const server = app.listen(10000, () => {
+const server = app.listen(4000, () => {
   console.log(
     `Server started on PORT:10000  mode.`
   );
