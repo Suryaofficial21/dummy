@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 // Checks if user is authenticated or not
 export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   const authorization = req.headers.authorization;
+console.log(authorization)
 
   if (!authorization || !authorization.startsWith('Bearer')) {
     return res.status(402).json({
@@ -15,6 +16,7 @@ export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   }
 
   const token = authorization.split(' ')[1];
+  console.log(token+"token")
 
   if (!token) {
     return res.status(401).json({
