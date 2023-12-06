@@ -6,6 +6,9 @@ import ErrorHandler from '../utils/errorHandler.js';
 export const addToWishlist = catchAsyncErrors(async (req, res, next) => {
   const userId = req.user._id;
   const { productId } = req.body;
+  if(!userId){
+    return res.status(400).json({message: 'User not found'})
+  }
 
   let userActivity = await UserActivity.findOne({ userId });
 
@@ -28,7 +31,9 @@ export const addToWishlist = catchAsyncErrors(async (req, res, next) => {
 
 export const getWishlist = catchAsyncErrors(async (req, res, next) => {
   const userId = req.user._id;
-
+  if(!userId){
+    return res.status(400).json({message: 'User not found'})
+  }
   const userActivity = await UserActivity.findOne({ userId }).populate({
     path: 'wishlist',
     model: 'Product',
