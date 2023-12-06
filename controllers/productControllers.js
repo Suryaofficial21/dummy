@@ -132,7 +132,7 @@ export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
   console.log("working")
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+return res.status(404).json({ message: "Product not found" });
   }
 
   res.status(200).json({
@@ -167,9 +167,9 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
   console.log("working")
   upload.single('image')(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
-      return next(new ErrorHandler('Multer error', 400));
+      return res.status(400).json({ error: err.message });
     } else if (err) {
-      return next(new ErrorHandler(err.message, 400));
+      return res.status(400).json({ error: err.message });
     }
     console.log("working")
 
@@ -180,7 +180,7 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
 
 
       if (!product) {
-        return next(new ErrorHandler('Product not found', 404));
+        return res.status(404).json({ message: "Product not found" });
       }
       console.log("working")
 
@@ -214,7 +214,8 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
         product,
       });
     } catch (error) {
-      next(new ErrorHandler(error.message, 500));
+      console.error(error);
+      res.status(500).json({ message: "Error updating product", error });
     }
   });
 });
@@ -223,7 +224,7 @@ export const uploadProductImages = catchAsyncErrors(async (req, res) => {
   let product = await Product.findById(req?.params?.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    return res.status(404).json({ message: "Product not found" });
   }
 
   const uploader = async (image) => upload_file(image, "shopit/products");
@@ -269,7 +270,7 @@ export const deleteProduct = catchAsyncErrors(async (req, res) => {
   const product = await Product.findById(req?.params?.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    return res.status(404).json({ message: "Product not found" });
   }
 
   // Deleting image associated with product
@@ -297,7 +298,7 @@ export const createProductReview = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(productId);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    return res.status(404).json({ message: "Product not found" });
   }
 
   const isReviewed = product?.reviews?.find(
@@ -332,7 +333,7 @@ export const getProductReviews = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.query.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    return res.status(404).json({ message: "Product not found" });
   }
 
   res.status(200).json({
@@ -345,7 +346,8 @@ export const deleteReview = catchAsyncErrors(async (req, res, next) => {
   let product = await Product.findById(req.query.productId);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    return res.status(404).json({ message: "Product not found" });
+    
   }
 
   const reviews = product?.reviews?.filter(

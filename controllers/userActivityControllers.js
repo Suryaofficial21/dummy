@@ -35,7 +35,7 @@ export const getWishlist = catchAsyncErrors(async (req, res, next) => {
   });
 
   if (!userActivity) {
-    return next(new ErrorHandler('Wishlist not found', 404));
+    return res.status(404).json({ message: 'User activity not found' });
   }
 
   res.status(200).json(userActivity.wishlist);
@@ -49,11 +49,11 @@ export const removeFromWishlist = async (req, res, next) => {
     const userActivity = await UserActivity.findOne({ userId });
 
     if (!userActivity) {
-      return next(new ErrorHandler('User activity not found', 404));
+      return res.status(404).json({ message: 'User activity not found' });
     }
 
     if (!userActivity.wishlist.includes(productId)) {
-      return next(new ErrorHandler("This product doesn't exist in the wishlist.", 403));
+      return res.status(403).json({ message: "Product is not in the wishlist." });
     }
 
     userActivity.wishlist = userActivity.wishlist.filter((id) => id.toString() !== productId);
@@ -88,7 +88,7 @@ export const addToRecentlyViewed = catchAsyncErrors(async (req, res, next) => {
     await userActivity.save();
 
     
-    return next(new ErrorHandler("Product is already in the recently viewed list.", 403));
+return res.status(403).json({ message: "Product is already in the recently viewed." });
   }
 });
 
@@ -101,7 +101,8 @@ export const getRecentlyViewed = catchAsyncErrors(async (req, res, next) => {
   });
 
   if (!userActivity) {
-    return next(new ErrorHandler('Recently viewed items not found', 404));
+    
+    return res.status(404).json({ message: 'Recently viewed items not found' });
   }
 
   const recentlyViewedWithWishlistStatus = userActivity.recentlyViewed
@@ -124,11 +125,11 @@ export const removeFromRecentlyViewed = async (req, res, next) => {
     const userActivity = await UserActivity.findOne({ userId });
 
     if (!userActivity) {
-      return next(new ErrorHandler('User activity not found', 404));
+      return res.status(404).json({ message: 'User activity not found' });
     }
 
     if (!userActivity.recentlyViewed.includes(productId)) {
-      return next(new ErrorHandler("This product doesn't exist in recently viewed items.", 403));
+      return res.status(403).json({ message: "Product is not in the recently viewed items." });
     }
 
     userActivity.recentlyViewed = userActivity.recentlyViewed.filter((id) => id.toString() !== productId);

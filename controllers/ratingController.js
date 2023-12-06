@@ -12,7 +12,10 @@ export const newRating = catchAsyncErrors(async (req, res, next) => {
   const existingRating = await Rating.findOne({ userId, productId });
 
   if (existingRating) {
-    return next(new ErrorHandler("You have already rated this product", 400));
+    return res.status(400).json({
+      success: false,
+      message: "You have already rated this product",
+    });
   }
 
   const newRating = await Rating.create({
@@ -63,7 +66,10 @@ export const updateRating = catchAsyncErrors(async (req, res, next) => {
   );
 
   if (!updatedRating) {
-    return next(new ErrorHandler("No Rating found with this ID", 404));
+    return res.status(400).json({
+      success: false,
+      message: "No rating found with this ID",
+    });
   }
 
   // Calculate average rating and update product
@@ -80,7 +86,10 @@ export const deleteRating = catchAsyncErrors(async (req, res, next) => {
   const deletedRating = await Rating.findByIdAndDelete(ratingId);
 
   if (!deletedRating) {
-    return next(new ErrorHandler("No Rating found with this ID", 404));
+   return res.status(400).json({
+      success: false,
+      message: "No rating found with this ID",
+    });
   }
 
   // Calculate average rating and update product
