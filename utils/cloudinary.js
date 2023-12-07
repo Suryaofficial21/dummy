@@ -1,14 +1,14 @@
 import { rejects } from 'assert'
-import cloudinary from 'cloudinary'
+import {v2 as cloudinary} from 'cloudinary';
 import dotenv from 'dotenv'
 import { resolve } from 'url'
 
 dotenv.config({ path: 'backend/config/config.env' })
 
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: "dqjp3lofz",
+    api_key: "483998849616254",
+    api_secret: "utP6sPpuBngEPc-GljPzDBQDgL4",
 });
 
 

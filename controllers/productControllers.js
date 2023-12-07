@@ -9,6 +9,14 @@ import path from "path";
 import jwt from 'jsonwebtoken';
 import User from "../models/user.js";
 import UserActivity from "../models/userActivity.js";
+import {v2 as cloudinary} from 'cloudinary';
+cloudinary.config({
+    cloud_name: "dqjp3lofz",
+    api_key: "483998849616254",
+    api_secret: "utP6sPpuBngEPc-GljPzDBQDgL4",
+});
+
+
 // Create new Product   =>  /api/v1/products
 export const getProducts = catchAsyncErrors(async (req, res, next) => {
   // Constants
@@ -171,14 +179,23 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
     } else if (err) {
       return res.status(400).json({ error: err.message });
     }
-    console.log("working")
+  
 
     // Now you can handle the updated request
     try {
       let product = await Product.findById(req.params.id);
       console.log("working")
-
-
+if(req.file){
+      await cloudinary.uploader.upload(req.file.path, async function (err, result) {
+        if (err) {
+          return res.status(400).json({ error: err.message });
+        }else{
+        product.attributes.image.push(result.url);
+          
+        }
+      
+      
+      })}
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
       }
@@ -192,7 +209,6 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
         // Save the image path in the 'attributes' object
         const path = req.file.path;
      
-        product.attributes.image.push(path);
 
       }
       console.log("working")
