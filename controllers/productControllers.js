@@ -173,6 +173,7 @@ const upload = multer({ storage: storage });
 export const updateProduct = catchAsyncErrors(async (req, res, next) => {
   // Multer middleware to handle image upload
   console.log("working")
+
   upload.single('image')(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ error: err.message });
