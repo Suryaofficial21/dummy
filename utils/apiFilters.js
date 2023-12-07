@@ -37,12 +37,15 @@ class APIFilters {
       } else if (key === "rating") {
         queryCopy[newKey] = { $gte: Number(queryCopy[key]) };
         delete queryCopy[key];
-      } else if (key === "category") {
+      } else if (key === "category" || key==="subCategory") {
         // Handle multiple values for category (comma-separated)
         const values = queryCopy[key].split(",");
         queryCopy["$or"] = values.map(value => ({ [newKey]: value }));
         delete queryCopy[key];
-      } else {
+      } 
+      
+      
+      else {
         queryCopy[newKey] = queryCopy[key];
         delete queryCopy[key];
       }
