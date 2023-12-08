@@ -35,11 +35,11 @@ const orderSchema = new mongoose.Schema(
     },
     orderId: {
       type: String,
-      required: true,
+      
     },
-    InvoiceId:{
+    invoiceId:{
       type: String,
-      required: true,
+      
     },
     orderItems: [
       {
@@ -111,7 +111,7 @@ orderSchema.pre("save", async function (next) {
     if (!this.orderId) {
       const lastOrder = await this.constructor.findOne({}, {}, { sort: { createdAt: -1 } });
       const lastOrderId = lastOrder ? parseInt(lastOrder.orderId.split("-")[1]) : 0;
-      this.orderId = `ORD-${("0000" + (lastOrderId + 1)).slice(-5)}`;
+      this.orderId = `IP-ORD-${("0000" + (lastOrderId + 1)).slice(-5)}`;
     }
 
     // Generate and set invoice ID with present date if not present
@@ -129,7 +129,8 @@ orderSchema.pre("save", async function (next) {
 
     next();
   } catch (error) {
-    next(error);
+    // next(error);
+    console.log(error)
   }
 });
 export default mongoose.model("Order", orderSchema);
