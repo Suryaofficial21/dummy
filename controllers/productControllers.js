@@ -171,48 +171,44 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 // Update product details   =>  /api/v1/products/:id
 export const updateProduct = catchAsyncErrors(async (req, res, next) => {
-  // Multer middleware to handle image upload
-  console.log("working")
+  try {
+    let product = await Product.findById(req.params.id);
 
-  upload.single('image')(req, res, async function (err) {
-    if (err instanceof multer.MulterError) {
-      return res.status(400).json({ error: err.message });
-    } else if (err) {
-      return res.status(400).json({ error: err.message });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
     }
-  
 
-    // Now you can handle the updated request
-    try {
-      let product = await Product.findById(req.params.id);
-      console.log("working")
-if(req.file){
-      await cloudinary.uploader.upload(req.file.path, async function (err, result) {
-        if (err) {
-          return res.status(400).json({ error: err.message });
-        }else{
-        product.attributes.image.push(result.url);
-          
-        }
-      
-      
-      })}
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+    // Use the 'image' field in the form
+    upload.array('image')(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({ error: err.message });
+      } else if (err) {
+        return res.status(500).json({ error: err.message });
       }
-      console.log("working")
+
+      // Now, req.files should be defined with the uploaded files
+
+      if (req.files) {
+        for (const file of req.files) {
+          // Upload each file to Cloudinary
+          await cloudinary.uploader.upload(file.path, async function (err, result) {
+            if (err) {
+              return res.status(400).json({ error: err.message });
+            } else {
+              // Ensure that product.attributes.image is an array
+              if (!product.attributes.image || !Array.isArray(product.attributes.image)) {
+                product.attributes.image = [];
+              }
+
+              // Push the Cloudinary URL to the image array
+              product.attributes.image.push(result.url);
+            }
+          });
+        }
+      }
 
       // Update attributes
       product.attributes.updatedAt = new Date();
-
-      // Check if an image was uploaded
-      if (req.file) {
-        // Save the image path in the 'attributes' object
-        const path = req.file.path;
-     
-
-      }
-      console.log("working")
 
       // Combine existing attributes with the updated ones
       const combinedObject = { ...product.attributes, ...req.body.attributes };
@@ -227,11 +223,11 @@ if(req.file){
       res.status(200).json({
         product,
       });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error updating product", error });
-    }
-  });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating product", error });
+  }
 });
 // Upload product images   =>  /api/v1/admin/products/:id/upload_images
 export const uploadProductImages = catchAsyncErrors(async (req, res) => {
