@@ -33,6 +33,14 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    orderId: {
+      type: String,
+      required: true,
+    },
+    InvoiceId:{
+      type: String,
+      required: true,
+    },
     orderItems: [
       {
         name: {
@@ -97,5 +105,31 @@ const orderSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+orderSchema.pre("save", async function (next) {
+  try {
+    // Generate and set order ID if not present
+    if (!this.orderId) {
+      const lastOrder = await this.constructor.findOne({}, {}, { sort: { createdAt: -1 } });
+      const lastOrderId = lastOrder ? parseInt(lastOrder.orderId.split("-")[1]) : 0;
+      this.orderId = `ORD-${("0000" + (lastOrderId + 1)).slice(-5)}`;
+    }
 
+    // Generate and set invoice ID with present date if not present
+    if (!this.invoiceId) {
+      const lastInvoice = await this.constructor.findOne({}, {}, { sort: { createdAt: -1 } });
+      const lastInvoiceId = lastInvoice ? parseInt(lastInvoice.invoiceId.split("-")[1]) : 0;
+
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+      const day = String(currentDate.getDate()).padStart(2, "0");
+
+      this.invoiceId = `INV-${year}${month}${day}-${("0000" + (lastInvoiceId + 1)).slice(-5)}`;
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 export default mongoose.model("Order", orderSchema);

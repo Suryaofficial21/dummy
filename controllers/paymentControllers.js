@@ -154,6 +154,7 @@ const getOrderItems = async (line_items) => {
 export const stripeWebhook = catchAsyncErrors(async (req, res, next) => {
 
   try {
+    console.log("webhook csme")
     const signature = req.headers["stripe-signature"];
 
     const event = stripe.webhooks.constructEvent(
@@ -166,21 +167,7 @@ export const stripeWebhook = catchAsyncErrors(async (req, res, next) => {
       const line_items = await stripe.checkout.sessions.listLineItems(
         session.id
       );
- function calculateCost(amount){
-if(session.currency=="inr"){
-  return (amount*0.0095)/100
-}
-if(session.currency=="usd"){
-  return (amount/100)*0.79
-}
-if(session.currency=="geurp"){
-  return (amount/100)*0.87
-}
 
-return amount/100
-
-
- }
       const orderItems = await getOrderItems(line_items);
       const user = session.client_reference_id;
 

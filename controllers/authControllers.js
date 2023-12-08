@@ -89,7 +89,7 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // Find user in the database
   const user = await User.findOne({ email: req.body.email });
   let resetUrl
-
+   console.log(req.body,user)
   if (!user && !req.body.name)  {
     return res.status(400).json({
       success: false,
@@ -98,13 +98,14 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   }
   else{
   // Get reset password token
+  if(user){
   const resetToken = user.getResetPasswordToken();
 
   await user.save();
 
   // Create reset password url
    resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
-  }
+  }}
 
 
   const message = getResetPasswordTemplate(user?.name, resetUrl);
