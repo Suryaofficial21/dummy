@@ -66,6 +66,7 @@ import Product from'../models/product.js'
 // Create stripe checkout session   =>  /api/v1/payment/checkout_session
 export const stripeCheckoutSession = catchAsyncErrors(
   async (req, res, next) => {
+    console.log("payment checkout session is running")
     const body = req?.body;
     let currency='usd'
     let hashvalue='shr_1OGMGAHxCBu9c7Ql1rUWVM3A'
@@ -107,8 +108,8 @@ export const stripeCheckoutSession = catchAsyncErrors(
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      success_url: `${process.env.FRONTEND_URL}/me/order`,
-      cancel_url: `${process.env.FRONTEND_URL}/`,
+      success_url: `${`https://ecommerce-website-mauve-beta.vercel.app/`}/me/order`,
+      cancel_url: `${`https://ecommerce-website-mauve-beta.vercel.app/`}/`,
       customer_email: req?.user?.email,
       client_reference_id: req?.user?._id?.toString(),
       mode: "payment",
@@ -160,7 +161,7 @@ export const stripeWebhook = catchAsyncErrors(async (req, res, next) => {
     const event = stripe.webhooks.constructEvent(
       req.rawBody,
       signature,
-      'whsec_69045856e5e6ee1ddbb8c40460924f1af76bb4e89b8c88fb6229c6d743b9918c'
+      'whsec_LezWmjQjOlL8Pe6vx3JksEbvqlElcP1n'
     );
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
