@@ -110,7 +110,9 @@ orderSchema.pre("save", async function (next) {
     // Generate and set order ID if not present
     if (!this.orderId) {
       const lastOrder = await this.constructor.findOne({}, {}, { sort: { createdAt: -1 } });
+
       const lastOrderId = lastOrder ? parseInt(lastOrder.orderId.split("-")[1]) : 0;
+console.log(lastOrder,lastOrderId)
       this.orderId = `IP-ORD-${("0000" + (lastOrderId + 1)).slice(-5)}`;
     }
 
