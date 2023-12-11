@@ -129,7 +129,8 @@ orderSchema.pre("save", async function (next) {
       const month = String(currentDate.getMonth() + 1).padStart(2, "0");
       const day = String(currentDate.getDate()).padStart(2, "0");
 
-      this.invoiceId = `INV-${year}${month}${day}-${("0000" + (lastInvoiceId + 1)).slice(-5)}`;
+      this.invoiceId = `INV_${year}${month}${day}-${("0000" + (lastInvoiceId + 1)).slice(-5)}`;
+      console.log(lastInvoice,lastInvoiceId,this.invoiceId)
     }
 
     next();
