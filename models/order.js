@@ -113,7 +113,7 @@ orderSchema.pre("save", async function (next) {
 
       const lastOrderId = lastOrder ? parseInt(lastOrder.orderId.split("-")[1]) : 0;
 
-      this.orderId = `IP-ORD-${("0000" + (lastOrderId + 1)).slice(-5)}`;
+      this.orderId = `IP_ORD-${("0000" + (lastOrderId + 1)).slice(-5)}`;
 
 
       console.log(lastOrder,lastOrderId,this.orderId)
