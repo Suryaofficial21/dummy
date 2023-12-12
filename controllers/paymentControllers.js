@@ -61,7 +61,7 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import Order from "../models/order.js";
 
 import Stripe from "stripe";
-const stripe = Stripe('sk_test_51OErOnHxCBu9c7Ql5sgplCWIMJFi8zig8v9UIAzAPD59h8fc57iksG4RThThjeDO0skg31bRxtbIw8a5jZ5Wz7H700bgAN4ZuL');
+const stripe = Stripe('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');
 import Product from'../models/product.js'
 // Create stripe checkout session   =>  /api/v1/payment/checkout_session
 export const stripeCheckoutSession = catchAsyncErrors(

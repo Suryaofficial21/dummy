@@ -72,11 +72,7 @@ const productSchema = new mongoose.Schema({
     category: {type:String},
     subcategory: {type:String},
     care_directions: { type: String },
-    image:{
-      
-      type: Array
-    
-    
+    image:{type: Array
     },
     sku:{type:String},
     origin:{type:String},
