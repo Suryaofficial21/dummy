@@ -79,7 +79,9 @@ export const getProducts = catchAsyncErrors(async (req, res, next) => {
 // Create new Product   =>  /api/v1/admin/products
 export const newProduct = catchAsyncErrors(async (req, res) => {
   req.body.user = req.user._id;
+
   //const addedProducts = await Product.create(req.body);
+ console.log(req.body)
 
   let id = 0
   const lastProduct = await Product.findOne({}, { id: 1 }, { sort: { id: -1 } });
@@ -101,7 +103,8 @@ export const newProduct = catchAsyncErrors(async (req, res) => {
     const product = await Product.create(req.body);
     res.status(200).json({ product });
   }
-});
+}
+);
 
 // Get single product details   =>  /api/v1/products/:id
 export const getProductDetails = catchAsyncErrors(async (req, res, next) => {

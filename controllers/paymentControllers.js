@@ -83,6 +83,16 @@ export const stripeCheckoutSession = catchAsyncErrors(
       currency="gbp"
       hashvalue="shr_1OGMM3HxCBu9c7Ql1a5EqPfz"
     }
+    
+
+    const taxRate = await stripe.taxRates.create({
+      display_name: 'VAT',
+      description: 'VAT',
+      percentage: 20,
+      jurisdiction: 'DE',
+      inclusive: false,
+    });
+    console.log(taxRate)
 
     const line_items = body?.orderItems?.map((item) => {
       return {
@@ -95,17 +105,27 @@ export const stripeCheckoutSession = catchAsyncErrors(
           },
           unit_amount: item?.price * 100,
         },
-        tax_rates: ["txr_1OEtQSHxCBu9c7Ql1ZtctwQ2"],
+        tax_rates: [`${taxRate.id}`],
         quantity: item?.quantity,
       };
     });
-
     const shippingInfo = body?.shippingInfo;
+console.log(shippingInfo,line_items)
+
    
+
+const shippingRate = await stripe.shippingRates.create({
+  display_name: 'Ground shipping',
+  type: 'fixed_amount',
+  fixed_amount: {
+    amount: 0,
+    currency: currency,
+  },
+});
+
     //inr shr_1OFGIEHxCBu9c7QlYdczX4VT
 
-    const shipping_rate =hashvalue;
-
+    const shipping_rate =shippingRate.id
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       success_url: `${`https://ecommerce-website-mauve-beta.vercel.app/`}/me/order`,
@@ -121,6 +141,7 @@ export const stripeCheckoutSession = catchAsyncErrors(
       ],
       line_items,
     });
+    console.log(session)
 
     res.status(200).json({
       url: session.url,
