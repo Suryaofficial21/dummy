@@ -81,6 +81,7 @@ const productSchema = new mongoose.Schema({
     lifespan:{type:String},
     dishes:{type:String},
     size:{type:Array},
+    color:{type:String},
     numOfReviews:{
       type:Number,
       default:0
