@@ -78,7 +78,7 @@ const productSchema = new mongoose.Schema({
     
     
     },
-    sku:{type:String}
+    sku:{type:String},
     origin:{type:String},
     quality:{type:String},
     flavours:{type:String},
