@@ -128,8 +128,8 @@ const shippingRate = await stripe.shippingRates.create({
     const shipping_rate =shippingRate.id
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      success_url: `${`https://ecommerce-website-mauve-beta.vercel.app/`}/me/order`,
-      cancel_url: `${`https://ecommerce-website-mauve-beta.vercel.app`}/`,
+      success_url:`https://india-produced.com/me/order`,
+      cancel_url: `https://india-produced.com/`,
       customer_email: req?.user?.email,
       client_reference_id: req?.user?._id?.toString(),
       mode: "payment",
