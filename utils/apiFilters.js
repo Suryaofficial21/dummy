@@ -29,14 +29,14 @@ class APIFilters {
   
       if (key === "min" && queryCopy["max"] === undefined) {
         // Case 1: Only "min" is present
-        queryCopy["attributes.price"] = { $gte: Number(queryCopy[key]) 
+        queryCopy["attributes.price"] = { $gte: Number(queryCopy[key]*105.2632) 
         
         };
         delete queryCopy[key]
 
       } else if (key === "max" && queryCopy["min"] === undefined) {
         // Case 2: Only "max" is present
-        queryCopy["attributes.price"] = { $lte: Number(queryCopy[key]) 
+        queryCopy["attributes.price"] = { $lte: Number(queryCopy[key]*105.2632) 
         
         };
         delete queryCopy[key]
@@ -45,8 +45,8 @@ class APIFilters {
    
 
         queryCopy["attributes.price"] = {
-          $gte: Number(queryCopy[key]),
-          $lte: Number(queryCopy["max"]),
+          $gte: Number(queryCopy[key]*105.2632),
+          $lte: Number(queryCopy["max"]*105.2632),
         };
       } else if (key === "rating") {
         queryCopy[newKey] = { $gte: Number(queryCopy[key]) };
