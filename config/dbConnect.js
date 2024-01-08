@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export const connectDatabase = () => {
-let DB_URI = 'mongodb+srv://ben999112:nMClLV2BqZ4SLI6V@india-produced.q5f2csk.mongodb.net/e-commerce?retryWrites=true&w=majority';
+let DB_URI = 'mongodb://localhost:27017/help-advice';
 
 
   mongoose.connect(DB_URI).then((con) => {

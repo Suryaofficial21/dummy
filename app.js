@@ -8,7 +8,7 @@ import path from "path";
 import axios from "axios";
 import cheerio from "cheerio"
 import cors from'cors'
-import Currency from "./models/currency.js";
+
 // import { fileURLToPath } from "url"
 
 // const __filename = fileURLToPath(import.meta.url)
@@ -46,31 +46,17 @@ app.use(
 app.use(cookieParser());
 
 // Import all routes
-import productRoutes from "./routes/products.js";
+// import productRoutes from "./routes/products.js";
 import authRoutes from "./routes/auth.js";
-import orderRoutes from "./routes/order.js";
-import paymentRoutes from "./routes/payment.js";
-import userActivityRoutes from './routes/userActivity.js'
-import ratingRoutes from './routes/rating.js'
-import currency from "./models/currency.js";
-
-app.use("/api/v1", productRoutes);
+import projectRoutes from "./routes/project.js"
+import proposalRoutes from './routes/proposal.js'
+import messageRoutes from './routes/message.js'
+// app.use("/api/v1", productRoutes);
 app.use("/api/v1", authRoutes);
-app.use("/api/v1", orderRoutes);
-app.use("/api/v1", paymentRoutes);
-app.use("/api/v1", userActivityRoutes);
-app.use("/api/v1", ratingRoutes);
+app.use('/api/v1', projectRoutes);
+app.use("/api/v1",proposalRoutes)
+app.use('/api/v1',messageRoutes)
 
-// if (process.env.NODE_ENV === "PRODUCTION") {
-//   app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-  // app.get('*', (req, res) => {
-  //   res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"))
-  // })
-
-app.get("/test", (req, res) => {
-  res.send("API is running successfully");
-});
 
 // Using error middleware
 app.use(errorMiddleware);
